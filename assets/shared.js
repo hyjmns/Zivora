@@ -16,23 +16,25 @@ function escHtml(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/<
    by their photos they belong to Long Hand Bag — the three long-handle
    totes first, and now also the tall top-handle bags of the same type
    as the Bella Couture set (tall arched handles, ring handles, long
-   straps). Only the two genuinely short-handle satchels (Chevron
-   Top-Handle Satchel, Model 6185-10#) stay in Hand Bags. Shoulder Bag,
-   Imported Bag, Backpack and the clutches are defined by their own
-   carry style / origin, so they keep their categories. The built-in
+   straps). Only the one genuinely short-handle satchel (Model 6185-10#)
+   stays in Hand Bags. Shoulder Bag, Imported Bag, Backpack and the
+   clutches are defined by their own carry style / origin, so they keep
+   their categories — except the five shoulder-carried bags moved to
+   Shoulder Bag on 2026-11-26 (Chevron Top-Handle Satchel, Heart-Lock
+   Top-Handle Satchel, Gucci Tassel Crossbody, Michael Kors Heart-Lock
+   Crossbody, Miu Miu-Style Logo Crossbody). The built-in
    list below already carries the corrected categories; this map also
    corrects every product loaded from Supabase, whose saved rows may
    still hold the old category, so the fix shows on the live site
    without a re-sync. */
-var SUB_FIX={"Everyday Tote":"Long Hand Bag","Monogram Shopper Tote":"Long Hand Bag","Zivora Chain-Handle Tote":"Long Hand Bag","Bella Couture 2-Piece Top-Handle Set":"Long Hand Bag","Heart-Lock Top-Handle Satchel":"Long Hand Bag","Ring-Handle Top-Handle Bag":"Long Hand Bag","Fashion Vanity Top-Handle Bag":"Long Hand Bag","Kiss-Lock Frame Top-Handle Bag":"Long Hand Bag","Ring-Handle Tassel Top-Handle Bag":"Long Hand Bag","Black & White Ring-Handle Top-Handle Bag":"Long Hand Bag","Marble Heart-Lock Top-Handle Bag":"Long Hand Bag","Zivora Striped Top-Handle Tote":"Long Hand Bag","Chevron-Strap Top-Handle Bag":"Long Hand Bag"};
+var SUB_FIX={"Everyday Tote":"Long Hand Bag","Monogram Shopper Tote":"Long Hand Bag","Zivora Chain-Handle Tote":"Long Hand Bag","Bella Couture 2-Piece Top-Handle Set":"Long Hand Bag","Ring-Handle Top-Handle Bag":"Long Hand Bag","Fashion Vanity Top-Handle Bag":"Long Hand Bag","Kiss-Lock Frame Top-Handle Bag":"Long Hand Bag","Ring-Handle Tassel Top-Handle Bag":"Long Hand Bag","Black & White Ring-Handle Top-Handle Bag":"Long Hand Bag","Marble Heart-Lock Top-Handle Bag":"Long Hand Bag","Zivora Striped Top-Handle Tote":"Long Hand Bag","Chevron-Strap Top-Handle Bag":"Long Hand Bag"};
 var PRODUCTS=[
  {id:1,name:"Cherry Hobo Shoulder Bag",cat:"Purses",sub:"Shoulder Bag",price:3500,old:4549,img:"assets/products/p01-1.jpg",gallery:["assets/products/p01-1.jpg","assets/products/p01-2.jpg","assets/products/p01-3.jpg","assets/products/p01-4.jpg","assets/products/p01-5.jpg","assets/products/p01-6.jpg","assets/products/p01-7.jpg"],colours:["Brown","Black","Pink","Lavender","Wine","Mint","Cream","Grey"],badge:"Bestseller",desc:"Soft suede-like hobo with a long shoulder strap, gold centre stripe and a cherry charm."},
  {id:2,name:"Cherry Flap Shoulder Bag",cat:"Purses",sub:"Shoulder Bag",price:3800,old:4949,img:"assets/products/p02-1.jpg",gallery:["assets/products/p02-1.jpg","assets/products/p02-2.jpg","assets/products/p02-3.jpg","assets/products/p02-4.jpg","assets/products/p02-5.jpg","assets/products/p02-6.jpg","assets/products/p02-7.jpg","assets/products/p02-8.jpg","assets/products/p02-9.jpg"],colours:["White","Black","Pink","Brown","Burgundy","Mint","Blue","Lavender","Light Blue"],badge:"New",desc:"Smooth leather flap shoulder bag with a gold lock clasp and cherry charm."},
  {id:3,name:"Fashion Chain Crossbody",cat:"Purses",sub:"Shoulder Bag",price:3500,old:4549,img:"assets/products/p03-1.jpg",gallery:["assets/products/p03-1.jpg","assets/products/p03-2.jpg"],colours:["Pink","Beige"],badge:"Loved",desc:"Flap crossbody with a chunky chain and a wide woven patterned shoulder strap."},
  {id:4,name:"Cherry Crossbody Bag",cat:"Purses",sub:"Shoulder Bag",price:3500,old:4549,img:"assets/products/p04-1.jpg",gallery:["assets/products/p04-1.jpg"],colours:["Beige"],badge:"Signature",desc:"Beige flap crossbody with \'Cherry\' script, a cherry charm and a wide zigzag strap."},
- {id:5,name:"Zivora Hobo Shoulder Bag",cat:"Purses",sub:"Shoulder Bag",price:3500,old:4549,img:"assets/products/p05-1.jpg",gallery:["assets/products/p05-1.jpg"],colours:["Cream"],badge:"Iconic",desc:"Cream textured hobo with long shoulder handles and a front pocket."},
- {id:6,name:"Chevron Top-Handle Satchel",cat:"Purses",sub:"Hand Bags",price:4500,old:5849,img:"assets/products/p06-1.jpg",gallery:["assets/products/p06-1.jpg","assets/products/p06-2.jpg"],colours:["Pink","Beige"],badge:"Everyday",desc:"Top-handle satchel with silver chevron straps and a matching mini pouch."},
- {id:7,name:"Heart-Lock Top-Handle Satchel",cat:"Purses",sub:"Long Hand Bag",price:4500,old:5849,img:"assets/products/p07-1.jpg",gallery:["assets/products/p07-1.jpg","assets/products/p07-2.jpg"],colours:["Pink","Mint"],badge:"Limited",desc:"Woven-texture satchel with a top handle, shoulder strap and heart lock charm."},
+ {id:6,name:"Chevron Top-Handle Satchel",cat:"Purses",sub:"Shoulder Bag",price:4500,old:5849,img:"assets/products/p06-1.jpg",gallery:["assets/products/p06-1.jpg","assets/products/p06-2.jpg"],colours:["Pink","Beige"],badge:"Everyday",desc:"Top-handle satchel with silver chevron straps and a matching mini pouch."},
+ {id:7,name:"Heart-Lock Top-Handle Satchel",cat:"Purses",sub:"Shoulder Bag",price:4500,old:5849,img:"assets/products/p07-1.jpg",gallery:["assets/products/p07-1.jpg","assets/products/p07-2.jpg"],colours:["Pink","Mint"],badge:"Limited",desc:"Woven-texture satchel with a top handle, shoulder strap and heart lock charm."},
  {id:8,name:"Ring-Handle Top-Handle Bag",cat:"Purses",sub:"Long Hand Bag",price:4500,old:5849,img:"assets/products/p08-1.jpg",gallery:["assets/products/p08-1.jpg","assets/products/p08-2.jpg"],colours:["Green","Pink"],badge:"Bestseller",desc:"Top-handle bag with a bold metal ring handle and white contrast straps."},
  {id:9,name:"Fashion Vanity Top-Handle Bag",cat:"Purses",sub:"Long Hand Bag",price:4200,old:5449,img:"assets/products/p09-1.jpg",gallery:["assets/products/p09-1.jpg","assets/products/p09-2.jpg"],colours:["Pink","Brown"],badge:"New",desc:"Structured vanity-style handbag with \'Fashion\' script and a front zip pocket."},
  {id:10,name:"Bella Couture 2-Piece Top-Handle Set",cat:"Purses",sub:"Long Hand Bag",price:5500,old:7149,img:"assets/products/p10-1.jpg",gallery:["assets/products/p10-1.jpg","assets/products/p10-2.jpg","assets/products/p10-3.jpg"],colours:["Brown","Lavender","Cream"],badge:"Loved",desc:"Two-piece top-handle set with gold locks and a matching mini bag."},
@@ -56,9 +58,9 @@ var PRODUCTS=[
  {id:28,name:"Floral Quilted Backpack",cat:"Purses",sub:"Backpack",price:4000,old:5199,img:"assets/products/p28-1.jpg",gallery:["assets/products/p28-1.jpg","assets/products/p28-2.jpg"],colours:["Blue","Cream"],badge:"Limited",desc:"Quilted floral backpack with front pockets and a matching pouch."},
  {id:29,name:"Everyday Canvas Backpack",cat:"Purses",sub:"Backpack",price:3500,old:4549,img:"assets/products/p29-1.jpg",gallery:["assets/products/p29-1.jpg"],colours:["Beige"],badge:"Bestseller",desc:"Plain beige canvas backpack with front zip pockets."},
  {id:30,name:"Pom-Pom Charm Backpack",cat:"Purses",sub:"Backpack",price:3800,old:4949,img:"assets/products/p30-1.jpg",gallery:["assets/products/p30-1.jpg"],colours:["Light Grey"],badge:"New",desc:"Light grey backpack with a pearl and fur pom-pom charm."},
- {id:31,name:"Gucci Tassel Crossbody",cat:"Purses",sub:"Imported Bag",price:6500,old:8449,img:"assets/products/p31-1.jpg",gallery:["assets/products/p31-1.jpg"],colours:["Navy Blue"],badge:"Loved",desc:"Navy crossbody with a Gucci logo, tassels and a wide patterned strap."},
- {id:32,name:"Michael Kors Heart-Lock Crossbody",cat:"Purses",sub:"Imported Bag",price:6000,old:7799,img:"assets/products/p32-1.jpg",gallery:["assets/products/p32-1.jpg","assets/products/p32-2.jpg"],colours:["Pink","Black"],badge:"Signature",desc:"Crossbody with Michael Kors lettering, a heart lock-key charm and a wide strap."},
- {id:33,name:"Miu Miu-Style Logo Crossbody",cat:"Purses",sub:"Imported Bag",price:6000,old:7799,img:"assets/products/p33-1.jpg",gallery:["assets/products/p33-1.jpg"],colours:["Green"],badge:"Iconic",desc:"Green crossbody with a gold designer-style logo plaque and a wide strap."},
+ {id:31,name:"Gucci Tassel Crossbody",cat:"Purses",sub:"Shoulder Bag",price:6500,old:8449,img:"assets/products/p31-1.jpg",gallery:["assets/products/p31-1.jpg"],colours:["Navy Blue"],badge:"Loved",desc:"Navy crossbody with a Gucci logo, tassels and a wide patterned strap."},
+ {id:32,name:"Michael Kors Heart-Lock Crossbody",cat:"Purses",sub:"Shoulder Bag",price:6000,old:7799,img:"assets/products/p32-1.jpg",gallery:["assets/products/p32-1.jpg","assets/products/p32-2.jpg"],colours:["Pink","Black"],badge:"Signature",desc:"Crossbody with Michael Kors lettering, a heart lock-key charm and a wide strap."},
+ {id:33,name:"Miu Miu-Style Logo Crossbody",cat:"Purses",sub:"Shoulder Bag",price:6000,old:7799,img:"assets/products/p33-1.jpg",gallery:["assets/products/p33-1.jpg"],colours:["Green"],badge:"Iconic",desc:"Green crossbody with a gold designer-style logo plaque and a wide strap."},
  {id:34,name:"Fendi Monogram Top-Handle Tote",cat:"Purses",sub:"Imported Bag",price:6500,old:8449,img:"assets/products/p34-1.jpg",gallery:["assets/products/p34-1.jpg"],colours:["Navy Blue"],badge:"Everyday",desc:"Navy monogram tote with tan handles and a Fendi logo plaque."},
  {id:35,name:"Dior Top-Handle Bag",cat:"Purses",sub:"Imported Bag",price:7000,old:9099,img:"assets/products/p35-1.jpg",gallery:["assets/products/p35-1.jpg"],colours:["Cream"],badge:"Limited",desc:"Cream top-handle bag with a black Dior logo plaque."},
  {id:36,name:"Coach Top-Handle Bag",cat:"Purses",sub:"Imported Bag",price:6500,old:8449,img:"assets/products/p36-1.jpg",gallery:["assets/products/p36-1.jpg"],colours:["Cream"],badge:"Bestseller",desc:"Cream top-handle bag with a gold Coach logo plaque and heart charms."},
@@ -450,7 +452,7 @@ bindTilt();
 /* init shared chrome */
 updateCart();
 (function(){var wc=document.getElementById('wishCount'); if(wc){var n=Object.keys(wishlist).length; wc.textContent=n; wc.style.display=n?'grid':'none';}})();
-/* auto-load live products on page open (fallback = built-in 56) */
+/* auto-load live products on page open (fallback = built-in 55) */
 loadRemoteProducts(false);
 
 /* ===== Header Collection dropdown: tap-to-open on touch devices (hover and
