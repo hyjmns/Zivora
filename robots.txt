@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://zivoraa-murex.vercel.app/sitemap.xml

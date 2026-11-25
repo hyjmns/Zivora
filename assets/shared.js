@@ -328,9 +328,9 @@ function toggleWish(id,btn){
 /* cart */
 function cartQty(){var t=0;for(var k in cart)t+=cart[k];return t;}
 function cartTotal(){var t=0;for(var k in cart){var p=prod(+k);if(p)t+=p.price*cart[k];}return t;}
-function addToCart(id){cart[id]=(cart[id]||0)+1;updateCart();showToast(prod(id).name+" added to your bag 👜");}
+function addToCart(id,noOpen){cart[id]=(cart[id]||0)+1;updateCart();showToast(prod(id).name+" added to your bag 👜");if(!noOpen)openCart();}
 /* Shop Now = buy-now: add this piece, then go straight to checkout */
-function shopNow(id){addToCart(id);openCheckout();}
+function shopNow(id){addToCart(id,true);openCheckout();}
 function setQty(id,q){if(q<=0)delete cart[id];else cart[id]=q;updateCart();}
 function updateCart(){
   document.getElementById('cartCount').textContent=cartQty();
