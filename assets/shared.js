@@ -116,9 +116,25 @@ function loadRemoteProducts(manual){
     showSbFix(false);
     var rows=Array.isArray(res.data)?res.data:[];
     if(!rows.length){setSbStatus("ok","Supabase: connected · products table is empty");SB_SOURCE="Website (built-in)";if(window.updateAdminStats)updateAdminStats();if(manual)showToast("Supabase is connected, but the products table is empty — press Sync");return false;}
-    PRODUCTS=rows.map(normalizeRemote);
-    /* give numeric ids for cart compatibility where remote id is not numeric */
-    PRODUCTS.forEach(function(p,ix){if(p.id===null||p.id===undefined)p.id=10000+ix;});
+    /* Merge remote rows into the built-in catalogue BY NAME, keeping the
+       built-in ids (1-56), photos and display order stable. Cart keys, View
+       Details links and the product page all use the same stable ids, so the
+       bag, the drawer and the checkout summary can never disagree with the
+       catalogue, and no product page can flip to "not found" when Supabase
+       loads. Admin price/description/badge edits win; photos stay the local
+       files. Rows with no built-in match (new pieces added in Admin) are
+       appended with stable 10000+ ids. */
+    var remoteByName={};
+    rows.forEach(function(r){var rp=normalizeRemote(r);remoteByName[rp.name]=rp;});
+    var merged=[];
+    PRODUCTS.forEach(function(base){
+      var rp=remoteByName[base.name];
+      if(rp){if(rp.price)base.price=rp.price;if(rp.old)base.old=rp.old;if(rp.desc)base.desc=rp.desc;if(rp.badge)base.badge=rp.badge;delete remoteByName[base.name];}
+      merged.push(base);
+    });
+    var nextRemote=10000;
+    Object.keys(remoteByName).forEach(function(n){var rp=remoteByName[n];if(rp.id===null||rp.id===undefined)rp.id=nextRemote++;merged.push(rp);});
+    PRODUCTS=merged;
     SB_SOURCE="Supabase";
     setSbStatus("ok","Supabase: connected · "+PRODUCTS.length+" products live");
     renderProducts(activeFilter());updateCart();if(window.updateAdminStats)updateAdminStats();if(window.renderAdminProducts)renderAdminProducts();if(window.onProductsReady)window.onProductsReady();
