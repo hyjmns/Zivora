@@ -109,6 +109,7 @@ function activeFilter(){var b=document.querySelector('.filter-btn.active');retur
 var SB_SQL_FIX="alter table public.products enable row level security;\nalter table public.orders enable row level security;\ngrant select on public.products to anon;\ngrant insert on public.orders to anon;\ngrant select, insert, update, delete on public.products to authenticated;\ngrant select, update on public.orders to authenticated;\ngrant usage, select on all sequences in schema public to anon, authenticated;\ndrop policy if exists \"zivora products public read\" on public.products;\ncreate policy \"zivora products public read\" on public.products for select to anon, authenticated using (true);\ndrop policy if exists \"zivora products owner manage\" on public.products;\ncreate policy \"zivora products owner manage\" on public.products for all to authenticated using (true) with check (true);\ndrop policy if exists \"zivora orders public insert\" on public.orders;\ncreate policy \"zivora orders public insert\" on public.orders for insert to anon, authenticated with check (true);\ndrop policy if exists \"zivora orders owner read\" on public.orders;\ncreate policy \"zivora orders owner read\" on public.orders for select to authenticated using (true);\ndrop policy if exists \"zivora orders owner update\" on public.orders;\ncreate policy \"zivora orders owner update\" on public.orders for update to authenticated using (true) with check (true);\nalter table public.orders add column if not exists email text;";
 function copySbSql(btn){if(navigator.clipboard)navigator.clipboard.writeText(SB_SQL_FIX).then(function(){showToast("SQL copied — paste it into the Supabase SQL Editor");});else showToast("The SQL is in the box above — copy it and run it in Supabase");}
 function showSbFix(show){var b=document.getElementById('sbFixBox');if(b)b.style.display=show?'block':'none';}
+function catalogueSig(){return PRODUCTS.map(function(p){return p.id+":"+p.name+":"+p.price+":"+p.old+":"+p.sub+":"+p.badge+":"+(p.desc||"");}).join("|");}
 function loadRemoteProducts(manual){
   setSbStatus("","Supabase: connecting…");
   return sbRequest("products?select=*&order=id.asc").then(function(res){
@@ -121,15 +122,20 @@ function loadRemoteProducts(manual){
        Details links and the product page all use the same stable ids, so the
        bag, the drawer and the checkout summary can never disagree with the
        catalogue, and no product page can flip to "not found" when Supabase
-       loads. Admin price/description/badge edits win; photos stay the local
-       files. Rows with no built-in match (new pieces added in Admin) are
-       appended with stable 10000+ ids. */
+       loads. Only price and description are overlaid from Supabase — those
+       are real columns the Admin can edit. The struck-through old price and
+       the badge are NOT overlaid: the products table has no columns for
+       them, so the remote values are just computed defaults (old = round
+       of price x 1.3, badge = "New") that would clobber the real ones.
+       Photos stay the local files. Rows with no built-in match (new pieces
+       added in Admin) are appended with stable 10000+ ids. */
+    var beforeSig=catalogueSig();
     var remoteByName={};
     rows.forEach(function(r){var rp=normalizeRemote(r);remoteByName[rp.name]=rp;});
     var merged=[];
     PRODUCTS.forEach(function(base){
       var rp=remoteByName[base.name];
-      if(rp){if(rp.price)base.price=rp.price;if(rp.old)base.old=rp.old;if(rp.desc)base.desc=rp.desc;if(rp.badge)base.badge=rp.badge;delete remoteByName[base.name];}
+      if(rp){if(rp.price)base.price=rp.price;if(rp.desc)base.desc=rp.desc;delete remoteByName[base.name];}
       merged.push(base);
     });
     var nextRemote=10000;
@@ -137,7 +143,12 @@ function loadRemoteProducts(manual){
     PRODUCTS=merged;
     SB_SOURCE="Supabase";
     setSbStatus("ok","Supabase: connected · "+PRODUCTS.length+" products live");
-    renderProducts(activeFilter());updateCart();if(window.updateAdminStats)updateAdminStats();if(window.renderAdminProducts)renderAdminProducts();if(window.onProductsReady)window.onProductsReady();
+    /* Only rebuild the grid/drawer when the catalogue actually changed.
+       Rebuilding an identical grid destroys the card a visitor is tapping
+       in that same moment, so a fast Add to Cart tap could be swallowed. */
+    var changed=catalogueSig()!==beforeSig;
+    if(changed){renderProducts(activeFilter());updateCart();}
+    if(window.updateAdminStats)updateAdminStats();if(window.renderAdminProducts)renderAdminProducts();if(window.onProductsReady)window.onProductsReady(changed);
     if(manual)showToast("Supabase products loaded ✦ "+PRODUCTS.length+" products");
     return true;
   });
