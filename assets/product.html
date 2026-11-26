@@ -103,7 +103,7 @@
   <div class="side-foot"><b>Cash on Delivery</b> available · Free delivery on orders over <b>PKR 5,000</b> · 7-day easy exchange</div>
 </aside>
 <script>window.ZV={root:"../",pages:""};</script>
-<script src="shared.js?v=44"></script>
+<script src="shared.js?v=45"></script>
 <script>
 document.getElementById('wishBtn').onclick=function(){
   var n=Object.keys(wishlist).length;
@@ -157,7 +157,7 @@ function renderProduct(){
     qc.appendChild(sp);
   });
   document.getElementById('pdAdd').onclick=function(){addToCart(p.id); openCart();};
-  document.getElementById('pdShopNow').onclick=function(){addToCart(p.id); openCheckout();};
+  document.getElementById('pdShopNow').onclick=function(){if(!cart[p.id])addToCart(p.id); openCheckout();};
   var rel=PRODUCTS.filter(function(x){return x.sub===p.sub&&x.id!==p.id;}).slice(0,4);
   var rg=document.getElementById('relatedGrid'); rg.innerHTML="";
   document.getElementById('relatedWrap').style.display=rel.length?'block':'none';

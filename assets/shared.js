@@ -344,8 +344,10 @@ function toggleWish(id,btn){
 function cartQty(){var t=0;for(var k in cart)t+=cart[k];return t;}
 function cartTotal(){var t=0;for(var k in cart){var p=prod(+k);if(p)t+=p.price*cart[k];}return t;}
 function addToCart(id){cart[id]=(cart[id]||0)+1;updateCart();showToast(prod(id).name+" added to your bag 👜");}
-/* Shop Now = buy-now: add this piece, then go straight to checkout */
-function shopNow(id){addToCart(id);openCheckout();}
+/* Shop Now = buy-now: add this piece ONLY if it is not already in the
+   bag, then go straight to checkout — so a piece already added does not
+   get counted twice at checkout. */
+function shopNow(id){if(!cart[id])addToCart(id);openCheckout();}
 function setQty(id,q){if(q<=0)delete cart[id];else cart[id]=q;updateCart();}
 function updateCart(){
   document.getElementById('cartCount').textContent=cartQty();
@@ -365,6 +367,10 @@ function updateCart(){
   document.getElementById('subTotal').textContent=fmt(sub);
   document.getElementById('delFee').textContent=sub>=5000?"FREE":fmt(del);
   document.getElementById('grandTotal').textContent=fmt(sub+del);
+  /* The checkout page keeps its own order summary (renderSummary in
+     checkout.html) — refresh it too, so a quantity change made in the
+     drawer shows there at once instead of only after a reload. */
+  if(typeof window.renderSummary==='function')window.renderSummary();
   saveCart();
 }
 updateCart();
