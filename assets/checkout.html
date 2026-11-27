@@ -178,6 +178,7 @@
 </aside>
 <script>window.ZV={root:"../",pages:""};</script>
 <script src="shared.js?v=45"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 document.getElementById('wishBtn').onclick=function(){
   var n=Object.keys(wishlist).length;
@@ -214,6 +215,23 @@ function renderSummary(){
 window.onProductsReady=function(changed){if(changed)renderSummary();};
 renderSummary();
 
+/* Order emails (EmailJS) — FILL AFTER EMAILJS SETUP: put the public key,
+   service ID and the two template IDs here; until then emails are skipped
+   silently and checkout works exactly as before. Never throws. */
+var EMAILJS={publicKey:"LFvyuR2r_uArjULLD",serviceId:"Zivora_Purse",tplOwner:"template_e23c15g",tplCustomer:"template_urgyxbi",ownerEmail:"zivorapurse@gmail.com"};
+function sendOrderEmails(order){
+  try{
+    if(!window.emailjs||!EMAILJS.publicKey||!EMAILJS.serviceId||!EMAILJS.tplOwner)return;
+    emailjs.init({publicKey:EMAILJS.publicKey});
+    var lines=order.items.map(function(it){return it.qty+" × "+it.name+" — "+fmt(it.price*it.qty);}).join("\n");
+    var isBank=(order.pay||"").indexOf("Bank")===0;
+    var base={order_no:order.order_no,customer_name:order.name,customer_email:order.email,customer_phone:order.phone,customer_address:order.address,payment_method:order.pay,items_text:lines,subtotal:fmt(order.subtotal),delivery:order.delivery===0?"FREE":fmt(order.delivery),total:fmt(order.total),delivery_note:isBank?"Please complete your bank transfer — our team will call to confirm your order and share the transfer details.":"Please keep cash ready for Cash on Delivery."};
+    var ownerParams=Object.assign({to_email:EMAILJS.ownerEmail},base);
+    emailjs.send(EMAILJS.serviceId,EMAILJS.tplOwner,ownerParams).catch(function(){});
+    if(order.email&&EMAILJS.tplCustomer){var custParams=Object.assign({to_email:order.email},base);emailjs.send(EMAILJS.serviceId,EMAILJS.tplCustomer,custParams).catch(function(){});}
+  }catch(err){}
+}
+
 /* Confirm order — same order object and Supabase save as before, now on
    this page: order number is generated, the cart is cleared, and the
    confirmation shows right here on the checkout page. */
@@ -243,6 +261,7 @@ document.getElementById('coForm').addEventListener('submit',function(e){
   saveOrderRemote(order).then(function(saved){
     document.getElementById('orderNo').textContent="Order No: "+no+(saved?" · Saved to Dashboard ✓":"");
     if(!saved)showToast("Order placed ✓ — please check Admin → Orders to confirm it was saved");
+    sendOrderEmails(order);
   });
 });
 </script>
